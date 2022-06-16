@@ -25,4 +25,5 @@ if (!(Test-Path .\reports)) {
     mkdir .\reports
 }
 
-Get-ADReplicationPartnerMetadata -Target $DomainControllers | Export-Csv -Path ".\reports\$FileName" -NoTypeInformation
+Get-ADReplicationPartnerMetadata -Target $DomainControllers `
+| Export-Csv -Path ".\reports\$FileName" -NoTypeInformation

@@ -27,23 +27,25 @@ if (!(Test-Path .\reports)) {
 # Domain name may be supplied as a parameter or entered after running the script
 if ($args[0]) {
     $DomainName = $args[0]
-} else {
+}
+else {
     $DomainName = Read-Host -Prompt "Domain name"
 }
 
-$Users = get-aduser -filter * `
-| Select-Object GivenName,Surname,SamAccountName,UserPrincipalName,`
-@{Name='PreferredUPN';Expression={
-    if ($_.Surname) {
+$Users = Get-ADUser -Filter * `
+| Select-Object GivenName, Surname, SamAccountName, UserPrincipalName, `
+@{Name = 'PreferredUPN'; Expression = {
+        if ($_.Surname) {
         ($_.GivenName + '.' + $_.Surname + '@' + $DomainName).ToLower()
-    } else {
+        }
+        else {
         ($_.GivenName + '@' + $DomainName).ToLower()
+        }
     }
-}
 } `
-| Select-Object *,@{Name='Compliant';Expression={
-    $_.UserPrincipalName.ToString() -eq $_.PreferredUPN.ToString()
-}
+| Select-Object *, @{Name = 'Compliant'; Expression = {
+        $_.UserPrincipalName.ToString() -eq $_.PreferredUPN.ToString()
+    }
 }
 
 $Users | Export-Csv -Path .\reports\$FileName -NoTypeInformation

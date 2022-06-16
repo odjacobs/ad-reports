@@ -25,4 +25,5 @@ if (!(Test-Path .\reports)) {
     mkdir .\reports
 }
 
-Get-ADReplicationFailure -Target $DomainControllers | Export-Csv -Path ".\reports\$FileName" -NoTypeInformation
+Get-ADReplicationFailure -Target $DomainControllers `
+| Export-Csv -Path ".\reports\$FileName" -NoTypeInformation

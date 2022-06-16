@@ -26,5 +26,7 @@ if (!(Test-Path .\reports)) {
 
 $Date = (Get-Date).AddDays(-30).ToString("MM/dd/yyyy")
 # Get active directory users who have not logged in since $Date
-$Users = Get-ADUser -Filter * -Properties LastLogonDate | Where-Object { $_.LastLogonDate -lt $Date -And $_.Enabled -eq $True }
-$Users | Select-Object GivenName,Surname,LastLogonDate,UserPrincipalName | Export-Csv -Path .\reports\$FileName -NoTypeInformation
+Get-ADUser -Filter * -Properties LastLogonDate `
+| Where-Object { $_.LastLogonDate -lt $Date -And $_.Enabled -eq $True }`
+| Select-Object GivenName, Surname, LastLogonDate, UserPrincipalName `
+| Export-Csv -Path .\reports\$FileName -NoTypeInformation
