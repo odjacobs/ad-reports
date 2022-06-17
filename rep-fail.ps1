@@ -1,5 +1,5 @@
 <# 
-    rep-fail.ps1 gets replication failures for each domain controller
+    rep-fail.ps1 creates a report of AD replication failures.
     Copyright (C) 2022  odjacobs
 
     This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #>
 
-$DomainControllers = Get-ADDomainController -Filter *
 # Get the current date and time
 $Date = (Get-Date -Format "MM-dd-yyyy").toString()
 $FileName = "rep-fail_$Date.csv"
@@ -25,5 +24,5 @@ if (!(Test-Path .\reports)) {
     mkdir .\reports
 }
 
-Get-ADReplicationFailure -Target $DomainControllers `
+Get-ADReplicationFailure -Target $(Get-ADDomain) -Scope Domain `
 | Export-Csv -Path ".\reports\$FileName" -NoTypeInformation
