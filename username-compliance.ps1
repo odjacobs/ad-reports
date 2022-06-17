@@ -32,7 +32,7 @@ else {
     $DomainName = Read-Host -Prompt "Domain name"
 }
 
-$Users = Get-ADUser -Filter * `
+$Users = Get-ADUser -LDAPFilter '(GivenName=*)' `
 | Select-Object GivenName, Surname, SamAccountName, UserPrincipalName, `
 @{Name = 'PreferredUPN'; Expression = {
         if ($_.Surname) {
