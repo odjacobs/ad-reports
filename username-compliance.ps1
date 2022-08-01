@@ -33,7 +33,7 @@ else {
 }
 
 $Users = Get-ADUser -LDAPFilter '(GivenName=*)' `
-| Select-Object GivenName, Surname, SamAccountName, UserPrincipalName, `
+| Select-Object Enabled, GivenName, Surname, SamAccountName, UserPrincipalName, `
 @{Name = 'PreferredUPN'; Expression = {
         if ($_.Surname) {
         ($_.GivenName + '.' + $_.Surname + '@' + $DomainName).ToLower()
